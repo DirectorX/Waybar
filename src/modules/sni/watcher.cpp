@@ -96,7 +96,8 @@ gboolean Watcher::handleRegisterItem(Watcher* obj,
 Watcher::GfWatch* Watcher::gfWatchFind(GSList* list, const gchar* bus_name,
   const gchar* object_path)
 {
-  for (GSList* l = list; l != nullptr; l = g_slist_next (l)) {
+  for (GSList* l = list; l != nullptr
+    && l->data != nullptr; l = g_slist_next (l)) {
     GfWatch* watch = static_cast<GfWatch*>(l->data);
     if (g_strcmp0 (watch->bus_name, bus_name) == 0
       && g_strcmp0 (watch->object_path, object_path) == 0) {
