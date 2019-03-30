@@ -398,6 +398,7 @@ int waybar::modules::Network::netlinkResponse(void *resp,
 }
 
 int waybar::modules::Network::handleEvents(struct nl_msg *msg, void *data) {
+  int ret = 0;
   auto net = static_cast<waybar::modules::Network *>(data);
   for (nlmsghdr *nh = nlmsg_hdr(msg); NLMSG_OK(nh, ret);
     nh = NLMSG_NEXT(nh, ret)) {
@@ -412,7 +413,7 @@ int waybar::modules::Network::handleEvents(struct nl_msg *msg, void *data) {
         if (!(rtif->ifi_flags & IFF_RUNNING)) {
           net->disconnected();
           net->dp.emit();
-          return;
+          return NL_SKIP;
         }
       }
     }
